@@ -1,0 +1,991 @@
+/* ==========================================================================
+   1. CONFIGURAÇÕES GERAIS, RESET E FUNDO INDUSTRIAL
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #edeef1; /* O cinza concreto plano, fosco e moderno */
+    color: #2b2d31;            /* Um preto grafite para o texto não ficar berrante */
+    padding-bottom: 60px;
+    -webkit-font-smoothing: antialiased; /* Melhora a renderização da fonte */
+}
+
+/* Containers principais onde ficam as seções (Visão Geral, Cadastro...) */
+.container-admin {
+    max-width: 1200px;
+    margin: 90px auto 30px auto; /* Ajustado o topo para compensar a barra fixa */
+    padding: 25px;
+    background-color: #ffffff; /* Branco puro para contrastar com o fundo cinza */
+    border-radius: 8px;        /* Cantos suavemente arredondados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra bem leve de estúdio */
+}
+
+/* Títulos principais dentro dos blocos */
+.titulo-painel {
+    color: #1a1a1a;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eeeeee; /* Linha divisória fina */
+    padding-bottom: 15px;
+}
+
+.subtitulo-painel {
+    font-size: 14px;
+    color: #666666;
+    margin: 5px 0 0 0;
+}
+
+/* ==========================================================================
+   2. MENU DO ADMINISTRADOR (HEADER PREMIUM FIXADO)
+   ========================================================================== */
+.navbar-admin {
+    background-color: #1a1a1a; /* Fundo preto fosco */
+    padding: 0 30px;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Afasta o título para a esquerda e o menu para a direita */
+    height: 70px;
+    box-sizing: border-box;
+    
+    /* Configurações para fixar o menu no topo absoluto */
+    position: fixed;    
+    top: 0;             
+    left: 0;            
+    z-index: 1000;      /* Garante que fica por cima de tudo */
+}
+
+/* O título "BROTHERS VINTAGE" */
+.navbar-logo h2 {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin: 0;
+    white-space: nowrap; /* Impede o título de quebrar em duas linhas */
+}
+
+/* Lista unificada de links para evitar bolinhas (•) e desalinhamentos */
+.navbar-admin ul.navbar-menu-ul,
+.navbar-menu ul {
+    list-style: none !important; 
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 20px; 
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilização dos links do menu */
+.navbar-admin .navbar-menu a,
+.navbar-menu ul li a {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    white-space: nowrap; /* Garante que o texto fique em uma linha só */
+}
+
+.navbar-admin .navbar-menu a:hover,
+.navbar-menu ul li a:hover {
+    color: #ffffff; /* O link acende em branco */
+}
+
+/* Botão "Ver Loja ↗" */
+.btn-ver-loja {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Botão de Sair */
+.btn-sair-adm {
+    background-color: #8b3a3a; /* Vermelho escuro elegante */
+    color: #ffffff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.2s;
+}
+
+.btn-sair-adm:hover {
+    background-color: #b22222; /* Vermelho mais vivo ao passar o mouse */
+}
+
+/* Elemento invisível opcional para empurrar o layout caso não use margin no container */
+.navbar-spacer {
+    height: 70px;
+    width: 100%;
+}
+
+/* ==========================================================================
+   3. SEÇÃO VISÃO GERAL (BARRA DE FILTROS)
+   ========================================================================== */
+.barra-filtros-tempo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    border: 1px solid #eaeaea;
+}
+
+.label-filtro {
+    font-weight: 600;
+    color: #444444;
+    font-size: 14px;
+}
+
+.botoes-periodo {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-filtro-tempo {
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.btn-filtro-tempo:hover {
+    background: #f0f0f0;
+    border-color: #999999;
+}
+
+.btn-filtro-tempo.ativo {
+    background: #1a1a1a;
+    color: #ffffff;
+    border-color: #1a1a1a;
+    font-weight: 600;
+}
+
+.filtro-data-personalizada {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #555555;
+}
+
+.filtro-data-personalizada input[type="date"] {
+    padding: 5px 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-family: inherit;
+    color: #1a1a1a;
+}
+
+.btn-aplicar-data {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-aplicar-data:hover {
+    background: #0056b3;
+}
+
+/* ==========================================================================
+   4. DASHBOARD (CARDS DE ESTATÍSTICAS)
+   ========================================================================== */
+.cards-resumo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Reduzido o mínimo para evitar quebras em telas médias */
+    gap: 20px;
+    margin-bottom: 35px;
+    margin-top: 20px;
+}
+
+.card-estatistica {
+    background: #ffffff;
+    border-left: 4px solid #1a1a1a; /* Linha industrial grafite estilosa na esquerda */
+    padding: 20px;
+    border-radius: 0 6px 6px 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    border-top: 1px solid #f0f0f0;
+    border-right: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-estatistica h3 {
+    margin: 0 0 10px 0;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666666;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.numero-destaque {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 5px 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+}
+
+.subtexto-card {
+    font-size: 12px;
+    color: #888888;
+}
+
+/* ==========================================================================
+   5. FORMULÁRIO DE CADASTRO (GRID INDUSTRIAL)
+   ========================================================================== */
+.form-cadastro-peca {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); /* 12 colunas imaginárias */
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.grupo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.col-12 { grid-column: span 12; }
+.col-6  { grid-column: span 6; }
+.col-4  { grid-column: span 4; }
+
+/* Responsividade básica para o grid do formulário */
+@media (max-width: 768px) {
+    .col-6, .col-4 { grid-column: span 12; }
+}
+
+.grupo-campo label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #555555;
+}
+
+.grupo-campo input[type="text"],
+.grupo-campo input[type="number"],
+.grupo-campo select {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #1a1a1a;
+    background-color: #fafafa;
+    border: 1px solid #dcd8cf;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.grupo-campo input[type="file"] {
+    background-color: #fafafa;
+    border: 1px solid #dcd8cf;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #555555;
+    cursor: pointer;
+}
+
+.grupo-campo input[type="file"]::file-selector-button {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.grupo-campo input[type="file"]::file-selector-button:hover {
+    background-color: #333333;
+}
+
+.grupo-campo input:focus,
+.grupo-campo select:focus {
+    background-color: #ffffff;
+    border-color: #1a1a1a;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.btn-cadastrar-produto {
+    grid-column: span 12;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: none;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.btn-cadastrar-produto:hover {
+    background-color: #333333;
+}
+
+/* ==========================================================================
+   6. CONFIGURAÇÕES DA TABELA ESTILO PLANILHA
+   ========================================================================== */
+.topo-secao-estoque {
+    margin-bottom: 20px;
+}
+
+.tabela-responsiva {
+    width: 100%;
+    overflow-x: auto; /* Evita quebra de layout no mobile */
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    background: #ffffff;
+}
+
+.tabela-produtos {
+    width: 100%;
+    border-collapse: collapse; /* Transforma em malha compacta estilo Sheets */
+    font-size: 14px;
+    color: #333333;
+}
+
+.tabela-produtos th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 2px solid #dee2e6;
+    white-space: nowrap;
+}
+
+.tabela-produtos td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eceeef;
+    vertical-align: middle;
+}
+
+.tabela-produtos tbody tr:hover {
+    background-color: #fdfdfd;
+}
+
+.foto-produto-tabela {
+    width: 55px;
+    height: 55px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    display: block;
+}
+
+.nome-produto-tabela {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.categoria-produto-tabela {
+    color: #6c757d;
+}
+
+.preco-produto-tabela {
+    font-weight: 600;
+    color: #2b2b2b;
+}
+
+/* Elementos Select internos da Tabela de Pedidos */
+.select-status-pedido {
+    background: #ffffff;
+    border: 1px solid #ced4da;
+    color: #495057;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.select-status-pedido:focus {
+    border-color: #1a1a1a;
+}
+
+/* Grade de tamanhos com pequenas etiquetas (Badges) */
+.grade-tamanhos-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.badge-grade {
+    background-color: #f1f3f5;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #495057;
+    border: 1px solid #e9ecef;
+}
+
+.badge-grade b {
+    color: #1a1a1a;
+}
+
+.badge-grade.baixo {
+    background-color: #fff3cd;
+    border-color: #ffe69c;
+    color: #856404;
+}
+
+.badge-grade.baixo b {
+    color: #856404;
+}
+
+.badge-grade.esgotado {
+    background-color: #f8d7da;
+    border-color: #f1aeb5;
+    color: #842029;
+}
+
+.badge-grade.esgotado b {
+    color: #842029;
+}
+
+/* Botões de Ação na Planilha */
+.botoes-acoes-tabela {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-tabela-editar, 
+.btn-tabela-excluir {
+    background: #ffffff;
+    border: 1px solid #ced4da;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.15s ease;
+}
+
+.btn-tabela-editar:hover {
+    background-color: #e8f4fd;
+    border-color: #3182ce;
+    color: #2b6cb0;
+}
+
+.btn-tabela-excluir:hover {
+    background-color: #fff5f5;
+    border-color: #e53e3e;
+    color: #c53030;
+}
+
+/* ==========================================================================
+   7. MODAL DE EDIÇÃO FLUTUANTE (DESIGN INDUSTRIAL PREMIUM)
+   ========================================================================== */
+.modal-admin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Cortina escura escurecida */
+    backdrop-filter: blur(3px);           /* Leve desfoque estético no fundo */
+    display: none;                        /* Controlado estritamente via JS (mude para 'flex' ao abrir) */
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;                        /* Superior à barra fixa */
+    padding: 20px;
+}
+
+.modal-conteudo {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: abrirModalSuave 0.3s ease;
+    overflow: hidden;
+}
+
+.modal-cabecalho {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-cabecalho h3 {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.btn-fechar-modal {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    line-height: 1;
+}
+
+.btn-fechar-modal:hover {
+    opacity: 1;
+}
+
+#form-editar-estoque {
+    padding: 20px;
+}
+
+.campo-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 15px;
+}
+
+.campo-modal label, .label-grade-modal {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #555555;
+    letter-spacing: 0.5px;
+}
+
+.input-modal {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1px solid #dcd8cf;
+    border-radius: 4px;
+    outline: none;
+    background-color: #fafafa;
+    transition: all 0.2s;
+}
+
+.input-modal:focus {
+    background-color: #ffffff;
+    border-color: #1a1a1a;
+}
+
+/* Alinhamento da grade de tamanhos interna do modal */
+.grade-inputs-modal {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    background: #fafafa;
+    padding: 12px;
+    border: 1px solid #dcd8cf;
+    border-radius: 4px;
+    margin-top: 6px;
+    margin-bottom: 20px;
+}
+
+.subcampo-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.subcampo-modal label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #666666;
+}
+
+.subcampo-modal input {
+    width: 100%;
+    text-align: center;
+    padding: 6px;
+    font-size: 13px;
+    border: 1px solid #dcd8cf;
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+
+.modal-botoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #edeef1;
+    padding-top: 15px;
+}
+
+.btn-modal-cancelar {
+    background: #ffffff;
+    border: 1px solid #ced4da;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #495057;
+    transition: background 0.15s;
+}
+
+.btn-modal-cancelar:hover {
+    background: #f8f9fa;
+}
+
+.btn-modal-salvar {
+    background: #1a1a1a;
+    border: none;
+    color: #ffffff;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.btn-modal-salvar:hover {
+    background: #333333;
+}
+
+/* Animação suave para abertura do modal */
+@keyframes abrirModalSuave {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* =================================================================
+   ESTILIZAÇÃO DA SEÇÃO DE CONFIGURAÇÕES DO SISTEMA
+   ================================================================= */
+
+/* Container Principal da Seção */
+.config-secao {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 24px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.config-secao h2 {
+    color: #212529;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.config-secao p {
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+/* Subtítulos (Logística e Cupons) */
+.config-subgrupo h3 {
+    color: #343a40;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Estrutura de Linhas do Formulário */
+.config-linha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f3f5;
+    max-width: 600px; /* Mantém os campos alinhados e elegantes */
+}
+
+.config-linha:last-of-type {
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+.config-linha label {
+    color: #495057;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Estilização dos Inputs (Campos de Texto e Número) */
+.config-input {
+    width: 160px;
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #495057;
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-align: right; /* Alinha os valores numéricos para a direita */
+}
+
+/* Ajuste para o input de texto do cupom ficar centralizado ou para a esquerda */
+#config-cupom-nome {
+    text-align: center;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.config-input:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Botão Salvar (Roxo Moderno) */
+.btn-salvar-sistema {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #6f42c1; /* Roxo elegante */
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 2px 4px rgba(111, 66, 193, 0.2);
+    margin-top: 15px;
+}
+
+.btn-salvar-sistema:hover {
+    background-color: #59359a;
+}
+
+.btn-salvar-sistema:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   MODO ESCURO
+   O painel usa muito estilo direto no HTML (inline), então as regras abaixo
+   miram diretamente nos valores de cor mais usados (via seletor de atributo)
+   e usam !important — é a única forma confiável de vencer um inline style
+   a partir de uma folha de estilo externa.
+   ========================================================================== */
+body.modo-escuro {
+    background-color: #16171a;
+    color: #e4e4e7;
+}
+
+/* --- FUNDOS PRINCIPAIS (containers, cards, tabelas, navbar) --- */
+body.modo-escuro .container-admin,
+body.modo-escuro .card-painel-estilo,
+body.modo-escuro .card-estatistica,
+body.modo-escuro .kpi-box,
+body.modo-escuro .navbar-admin,
+body.modo-escuro .tabela-produtos,
+body.modo-escuro .tabela-produtos thead,
+body.modo-escuro [style*="#ffffff"],
+body.modo-escuro [style*="#fff"],
+body.modo-escuro [style*="#fafafa"] {
+    background-color: #1f2023 !important;
+    color: #e4e4e7 !important;
+    border-color: #34353a !important;
+}
+
+/* --- FUNDOS SECUNDÁRIOS (linhas de destaque, blocos cinza-claro) --- */
+body.modo-escuro [style*="#f8f9fa"],
+body.modo-escuro [style*="#f1f3f5"],
+body.modo-escuro [style*="#e9ecef"],
+body.modo-escuro [style*="#edeef1"] {
+    background-color: #26272b !important;
+    color: #e4e4e7 !important;
+    border-color: #34353a !important;
+}
+
+/* --- CAMPOS DE FORMULÁRIO --- */
+body.modo-escuro input,
+body.modo-escuro select,
+body.modo-escuro textarea {
+    background-color: #26272b !important;
+    color: #e4e4e7 !important;
+    border-color: #3a3b40 !important;
+}
+
+/* --- BORDAS PADRÃO DO SISTEMA --- */
+body.modo-escuro [style*="#dcd8cf"] {
+    border-color: #3a3b40 !important;
+}
+
+/* --- TEXTOS (cinzas e pretos usados no painel original) --- */
+body.modo-escuro [style*="#333"],
+body.modo-escuro [style*="#1a1a1a"],
+body.modo-escuro [style*="#212529"] {
+    color: #f1f1f3 !important;
+}
+
+body.modo-escuro [style*="#666"],
+body.modo-escuro [style*="#777"],
+body.modo-escuro [style*="#888"],
+body.modo-escuro [style*="#555"],
+body.modo-escuro [style*="#6c757d"],
+body.modo-escuro [style*="#495057"] {
+    color: #a8a9b0 !important;
+}
+
+/* Fotos de produto continuam com cores normais (não escurecem a imagem em si) */
+body.modo-escuro img {
+    opacity: 0.92;
+}
+
+/* =================================================================
+   CORREÇÃO DEFINITIVA DE RESPONSIVIDADE (MENU E CARDS)
+   ================================================================= */
+@media (max-width: 768px) {
+    /* Ajustes globais do container */
+    .container, .container-admin, body {
+        overflow-x: hidden; /* Trava qualquer vazamento lateral da página */
+    }
+
+    .container, .container-admin {
+        padding: 12px !important;
+        margin-top: 110px !important; /* Compensa o menu em telas menores */
+    }
+
+    /* 1. CORREÇÃO DO MENU FIXO (NAVBAR) */
+    .navbar-admin, .navbar {
+        height: auto !important; /* Libera a altura fixa */
+        padding: 10px 14px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    .navbar-logo {
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Transforma os links do menu em uma barra com rolagem horizontal suave */
+    .navbar-menu, 
+    .navbar-admin ul.navbar-menu-ul,
+    nav,
+    .navbar-acoes {
+        display: flex !important;
+        flex-wrap: nowrap !important; /* Mantém na mesma linha com scroll */
+        overflow-x: auto !important; /* Permite rolar os links para o lado no celular */
+        -webkit-overflow-scrolling: touch;
+        gap: 12px !important;
+        padding-bottom: 6px !important;
+        width: 100% !important;
+    }
+
+    /* Ajusta os links do menu para não quebrarem texto */
+    .navbar-menu a, 
+    .navbar-admin .navbar-menu a,
+    nav a {
+        white-space: nowrap !important;
+        font-size: 13px !important;
+        padding: 4px 8px !important;
+    }
+
+    /* 2. CORREÇÃO DOS CARDS DE MÉTRICAS (FATURAMENTO, ESTOQUE, ETC) */
+    .cards-resumo-grid,
+    .dashboard-grid,
+    div:has(> .card-stat),
+    div:has(> .card-estatistica) {
+        display: flex !important;
+        flex-direction: column !important; /* Força 1 card por linha */
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+
+    .card-stat,
+    .card-estatistica {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-right: 0 !important;
+    }
+
+    /* 3. CORREÇÃO DO CARD/PAINEL BRANCO PRINCIPAL */
+    .painel-secao,
+    .card-principal,
+    main {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    /* 4. CORREÇÃO DE FILTROS E DATAS NO MOBILE */
+    .barra-filtros-tempo,
+    .filtros-tempo-container,
+    .filtro-data-container {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        gap: 10px !important;
+    }
+
+    .filtro-data-personalizada {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        width: 100% !important;
+    }
+
+    .filtro-data-personalizada input[type="date"],
+    .btn-aplicar-data,
+    .btn-filtro-tempo {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}

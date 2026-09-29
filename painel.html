@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brothers Vintage | Painel Administrativo</title>
+    <link rel="stylesheet" href="painel.css">
+</head>
+<body>
+
+    <header class="navbar navbar-admin">
+        <div class="navbar-logo">
+            <h2>BROTHERS VINTAGE - PAINEL ADM</h2>
+        </div>
+        <nav class="navbar-menu">
+            <ul class="navbar-menu-ul">
+                <li><a href="#visao-geral">Visão Geral</a></li>
+                <li><a href="#cadastrar-produto">Cadastrar Peça</a></li>
+                <li><a href="#estoque">Gerenciar Estoque</a></li>
+                <li><a href="#pedidos">Pedidos Recebidos</a></li>
+                <li><a href="#relatorios">Relatórios Avançados</a></li>
+                <li><a href="#configuracoes">⚙️ Configurações</a></li>
+                <li><a href="index.html" class="btn-ver-loja">Ver Loja ↗</a></li>
+                <li>
+                    <button type="button" id="btn-notificacoes" title="Pedidos pendentes" style="position:relative; background:none; border:none; font-size:20px; cursor:pointer; padding:6px;">
+                        🔔
+                        <span id="badge-notificacoes" style="display:none; position:absolute; top:0; right:0; background:#e74c3c; color:#fff; font-size:10px; font-weight:700; border-radius:50%; width:16px; height:16px; align-items:center; justify-content:center;">0</span>
+                    </button>
+                </li>
+                <li>
+                    <button type="button" id="btn-modo-escuro" title="Alternar modo escuro" style="background:none; border:none; font-size:18px; cursor:pointer; padding:6px;">🌙</button>
+                </li>
+                <li><button type="button" id="btn-logout" class="btn-sair-adm">🚪 Sair</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="navbar-spacer"></div>
+
+    <section id="visao-geral" class="container-admin">
+        <h2 class="titulo-painel">Painel Administrativo - Brothers Vintage</h2>
+        
+        <div class="barra-filtros-tempo" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div class="grupo-filtros-rapidos" style="display: flex; align-items: center; gap: 10px;">
+                <span class="label-filtro" style="font-weight: 600;">Filtrar período:</span>
+                <div class="botoes-periodo" style="display: flex; gap: 5px;">
+                    <button type="button" class="btn-filtro-tempo" id="filtro-diario">Diário</button>
+                    <button type="button" class="btn-filtro-tempo" id="filtro-semanal">Semanal</button>
+                    <button type="button" class="btn-filtro-tempo ativo" id="filtro-mensal">Mensal</button>
+                </div>
+            </div>
+
+            <div class="filtro-data-personalizada" style="display: flex; align-items: center; gap: 8px;">
+                <span style="color: #666; font-size: 14px;">Ou por data:</span>
+                <label for="data-inicio">De:</label>
+                <input type="date" id="data-inicio">
+                <label for="data-fim">Até:</label>
+                <input type="date" id="data-fim">
+                <button type="button" class="btn-aplicar-data" id="btn-filtrar-datas">Filtrar</button>
+            </div>
+        </div>
+
+        <div class="cards-resumo-grid" style="display: flex; gap: 20px; width: 100%; margin-top: 20px;">
+            <div class="card-estatistica" style="flex: 1; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 20px;">
+                <h3 style="font-size: 16px; letter-spacing: 0.5px; margin: 0;">💰 FATURAMENTO</h3>
+                <p class="numero-destaque" id="faturamento-total" style="font-size: 36px; font-weight: 700; margin: 10px 0;">R$ 0,00</p>
+                <span class="subtexto-card" id="rotulo-periodo" style="font-size: 14px; color: #777;">Período: Mensal</span>
+            </div>
+
+            <div class="card-estatistica" style="flex: 1; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 20px;">
+                <h3 style="font-size: 16px; letter-spacing: 0.5px; margin: 0;">👕 ITENS NO ESTOQUE</h3>
+                <p class="numero-destaque" id="total-estoque" style="font-size: 36px; font-weight: 700; margin: 10px 0;">0</p>
+                <span class="subtexto-card" style="font-size: 14px; color: #777;">Peças cadastradas</span>
+            </div>
+
+            <div class="card-estatistica" style="flex: 1; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 20px;">
+                <h3 style="font-size: 16px; letter-spacing: 0.5px; margin: 0;">⚠️ ESTOQUE BAIXO</h3>
+                <p class="numero-destaque" id="qtd-estoque-baixo" style="font-size: 36px; font-weight: 700; margin: 10px 0;">0</p>
+                <span class="subtexto-card" style="font-size: 14px; color: #777;">Tamanhos precisando de reposição</span>
+            </div>
+        </div>
+
+        <div class="card-painel-estilo" style="background: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e9ecef; margin-top: 20px;">
+            <h3 style="margin-top: 0; font-size: 16px; color: #333;">🎯 Meta de Faturamento do Mês</h3>
+            <div style="display:flex; justify-content:space-between; font-size:14px; color:#555; margin-bottom:6px;">
+                <span id="meta-texto-atual">R$ 0,00 de R$ 0,00</span>
+                <span id="meta-texto-percentual">0%</span>
+            </div>
+            <div style="width:100%; background:#e9ecef; height:14px; border-radius:7px; overflow:hidden;">
+                <div id="meta-barra-progresso" style="width:0%; background:#28a745; height:100%; transition: width 0.3s;"></div>
+            </div>
+            <p style="font-size:12px; color:#888; margin-top:8px; margin-bottom:0;">Defina o valor da meta em Configurações → Meta de Faturamento.</p>
+        </div>
+
+        <div class="card-painel-estilo" style="background: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e9ecef; margin-top: 20px;">
+            <h3 style="margin-top: 0; font-size: 16px; color: #333;">📊 Faturamento dos Últimos 6 Meses</h3>
+            <div id="grafico-faturamento-mensal" style="display:flex; align-items:flex-end; gap:16px; height:180px; padding-top:10px;"></div>
+        </div>
+    </section>
+
+    <section id="cadastrar-produto" class="container-admin">
+        <h2 class="titulo-painel">Cadastrar Nova Peça</h2>
+        
+        <form id="form-cadastrar-peca" class="form-cadastro-peca" method="POST" enctype="multipart/form-data">
+            <div class="grupo-campo col-12" style="margin-bottom: 12px;">
+                <label for="nome-peca">Nome do Produto</label>
+                <input type="text" id="nome-peca" placeholder="Ex: Camisa Polo Piquet Premium" required style="padding: 8px; border: 1px solid #dcd8cf; border-radius: 4px; width: 100%;">
+            </div>
+
+            <div class="grupo-campo col-12" style="margin-bottom: 12px;">
+                <label for="foto-peca">Fotos do Produto (pode selecionar mais de uma)</label>
+                <input type="file" id="foto-peca" accept="image/*" multiple style="padding: 6px; background: #fff; border: 1px solid #dcd8cf; border-radius: 4px; width: 100%;">
+            </div>
+
+            <div class="grupo-campo col-6" style="margin-bottom: 12px;">
+                <label for="categoria-peca">Categoria</label>
+                <div style="display: flex; gap: 8px;">
+                    <select id="categoria-peca" required style="flex: 1; padding: 8px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                        <option value="">Selecione uma categoria...</option>
+                        <option value="Camisas Normais">Camisas Normais</option>
+                        <option value="Camisas Polo">Camisas Polo</option>
+                        <option value="Camisas de Seleção">Camisas de Seleção</option>
+                        <option value="Calças">Calças</option>
+                        <option value="Conjuntos">Conjuntos</option>
+                        <option value="Bonés">Bonés</option>
+                    </select>
+                    <button type="button" id="btn-nova-categoria" style="padding: 8px 12px; background-color: #2ecc71; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">+ Nova</button>
+                    <button type="button" id="btn-deletar-categoria" style="padding: 8px 12px; background-color: #e74c3c; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" title="Deletar Categoria Selecionada">🗑️</button>
+                </div>
+            </div>
+
+            <div class="grupo-campo col-6" style="margin-bottom: 12px;">
+                <label for="preco-peca">Preço de Venda (R$)</label>
+                <input type="number" id="preco-peca" step="0.01" placeholder="Ex: 89.90" required style="width: 100%; padding: 8px; border: 1px solid #dcd8cf; border-radius: 4px;">
+            </div>
+
+            <div class="grupo-campo col-12" style="margin-bottom: 12px;">
+                <label>Grade de Estoque (Quantidade por Tamanho)</label>
+                <p style="font-size: 12px; color: #666; margin-bottom: 5px;">Insira a quantidade disponível para cada tamanho. Deixe 0 se não houver estoque.</p>
+                
+                <div class="grade-tamanhos-quantidades" style="display: flex; gap: 15px; flex-wrap: wrap; background: #fafafa; padding: 15px; border-radius: 4px; border: 1px solid #dcd8cf;">
+                    <div class="tamanho-item-estoque" style="display: flex; align-items: center; gap: 5px;">
+                        <span class="label-tamanho" style="font-weight: 600;">P:</span>
+                        <input type="number" id="qtd-p" min="0" value="0" class="input-qtd-tamanho" style="width: 60px; padding: 6px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div class="tamanho-item-estoque" style="display: flex; align-items: center; gap: 5px;">
+                        <span class="label-tamanho" style="font-weight: 600;">M:</span>
+                        <input type="number" id="qtd-m" min="0" value="0" class="input-qtd-tamanho" style="width: 60px; padding: 6px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div class="tamanho-item-estoque" style="display: flex; align-items: center; gap: 5px;">
+                        <span class="label-tamanho" style="font-weight: 600;">G:</span>
+                        <input type="number" id="qtd-g" min="0" value="0" class="input-qtd-tamanho" style="width: 60px; padding: 6px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div class="tamanho-item-estoque" style="display: flex; align-items: center; gap: 5px;">
+                        <span class="label-tamanho" style="font-weight: 600;">GG:</span>
+                        <input type="number" id="qtd-gg" min="0" value="0" class="input-qtd-tamanho" style="width: 60px; padding: 6px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div class="tamanho-item-estoque" style="display: flex; align-items: center; gap: 5px;">
+                        <span class="label-tamanho" style="font-weight: 600;">Único:</span>
+                        <input type="number" id="qtd-unico" min="0" value="0" class="input-qtd-tamanho" style="width: 60px; padding: 6px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-cadastrar-produto">🚀 Cadastrar Peça na Loja</button>
+        </form>
+    </section>
+
+    <section id="estoque" class="container-admin">
+        <div class="topo-secao-estoque">
+            <h2 class="titulo-painel">📦 Gerenciar Estoque</h2>
+            <p class="subtitulo-painel">Aqui você pode visualizar, editar ou remover as peças cadastradas na sua loja.</p>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:15px;">
+            <input type="text" id="busca-estoque-produto" placeholder="🔍 Buscar produto pelo nome..." style="padding: 8px 12px; border-radius: 4px; border: 1px solid #dcd8cf; flex:1; min-width:220px;">
+            <select id="filtro-estoque-categoria" style="padding: 8px 12px; border-radius: 4px; border: 1px solid #dcd8cf; background-color: white; cursor: pointer;">
+                <option value="todas" selected>Todas as Categorias</option>
+            </select>
+        </div>
+        
+        <div class="tabela-responsiva">
+            <table class="tabela-produtos">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Foto</th>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Grade (P / M / G / GG / Ún)</th>
+                        <th style="width: 150px; text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela-estoque">
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="pedidos" class="container-admin">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+            <div>
+                <h2 class="titulo-secao-adm" style="margin: 0;">📦 Pedidos Recebidos</h2>
+                <p class="instrucao-campo" style="color: #666; margin: 5px 0 0 0;">Gerencie e altere o status de envio dos pedidos feitos pelos seus clientes.</p>
+            </div>
+            
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <input type="text" id="busca-pedido-cliente" placeholder="🔍 Buscar por cliente..." style="padding: 6px 12px; border-radius: 4px; border: 1px solid #dcd8cf;">
+
+                <select id="filtro-status-pedido" style="padding: 6px 12px; border-radius: 4px; border: 1px solid #dcd8cf; font-weight: 600; background-color: white; cursor: pointer;">
+                    <option value="todos" selected>Todos os Status</option>
+                    <option value="Pendente">⏳ Pendente</option>
+                    <option value="Enviado">🚚 Enviado</option>
+                    <option value="Entregue">🏁 Entregue</option>
+                </select>
+
+                <label for="filtro-mes-pedido" style="font-weight: 600; font-size: 14px; margin-right: 4px;">Visualizar:</label>
+                <select id="filtro-mes-pedido" style="padding: 6px 12px; border-radius: 4px; border: 1px solid #dcd8cf; font-weight: 600; background-color: white; cursor: pointer;">
+                    <option value="todos" selected>Todos os Pedidos</option>
+                    <option value="atual">Mês Atual</option>
+                    <option value="anterior">Mês Anterior</option>
+                    <option value="outros">Outros meses</option>
+                </select>
+
+                <button type="button" id="btn-exportar-pedidos" style="padding: 6px 14px; border-radius: 4px; border: none; background-color: #28a745; color: #fff; font-weight: 600; cursor: pointer;">📤 Exportar CSV</button>
+            </div>
+        </div>
+        
+        <div class="cards-resumo-grid" style="display: flex; gap: 20px; width: 100%; margin-top: 15px; margin-bottom: 25px;">
+            <div class="card-estatistica" style="flex: 1; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 20px;">
+                <h3 style="font-size: 16px; letter-spacing: 0.5px; margin: 0;">🛒 TOTAL DE PEDIDOS</h3>
+                <p class="numero-destaque" id="qtd-pedidos-totais" style="font-size: 36px; font-weight: 700; margin: 10px 0;">0</p>
+                <span class="subtexto-card" style="font-size: 14px; color: #777;">Histórico da loja</span>
+            </div>
+
+            <div class="card-estatistica" style="border-left: 4px solid #f39c12; flex: 1; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 20px;">
+                <h3 style="font-size: 16px; letter-spacing: 0.5px; margin: 0;">⏳ PEDIDOS PENDENTES</h3>
+                <p class="numero-destaque" id="qtd-pedidos-pendentes" style="color: #f39c12; font-size: 36px; font-weight: 700; margin: 10px 0;">0</p>
+                <span class="subtexto-card" style="font-size: 14px; color: #777;">Necessitam de envio</span>
+            </div>
+
+            <div class="card-estatistica" style="border-left: 4px solid #2ecc71; flex: 1; min-height: 140px; display: flex; flex-direction: column; justify-content: space-between; margin: 0; padding: 20px;">
+                <h3 style="font-size: 16px; letter-spacing: 0.5px; margin: 0;">✅ PEDIDOS CONCLUÍDOS</h3>
+                <p class="numero-destaque" id="qtd-pedidos-concluidos" style="color: #2ecc71; font-size: 36px; font-weight: 700; margin: 10px 0;">0</p>
+                <span class="subtexto-card" style="font-size: 14px; color: #777; white-space: nowrap;">Enviados e Entregues</span>
+            </div>
+        </div>
+
+        <div class="tabela-responsiva">
+            <table class="tabela-produtos">
+                <thead>
+                    <tr>
+                        <th style="width: 80px;">Pedido</th>
+                        <th>Cliente / Contato</th>
+                        <th>Itens Pedidos</th>
+                        <th>Total / Pagamento</th>
+                        <th style="width: 140px; text-align: center;">Status</th>
+                        <th style="width: 100px; text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela-pedidos">
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="relatorios" class="container-admin">
+        <div class="relatorios-cabecalho">
+            <h2 class="titulo-secao-adm">📊 Relatórios de Desempenho</h2>
+            <p class="instrucao-campo">Analise as estatísticas de vendas para entender o comportamento dos seus clientes.</p>
+        </div>
+
+        <div class="relatorios-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+            <div class="mini-card-report" style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 8px;">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #333; border-bottom: 2px solid #dee2e6; padding-bottom: 8px;">📈 Desempenho de Produtos</h3>
+                
+                <div class="report-section">
+                    <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #2ecc71;">🔥 Mais Vendidos (Destaques)</h4>
+                    <div id="lista-mais-vendidos"></div>
+                </div>
+
+                <div class="report-section" style="margin-top: 20px;">
+                    <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #e67e22;">❄️ Menos Vendidos (Encalhados)</h4>
+                    <div id="lista-menos-vendidos"></div>
+                </div>
+            </div>
+
+            <div class="mini-card-report" style="background: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 8px;">
+                <h3 style="margin: 0 0 15px 0; font-size: 16px; color: #333; border-bottom: 2px solid #dee2e6; padding-bottom: 8px;">📐 Métricas de Consumo</h3>
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #495057;">👕 Ranking de Tamanhos Procurados:</h4>
+                
+                <div id="lista-tamanhos-ranking"></div>
+            </div>
+        </div>
+
+        <div class="financeiro-row" style="display: flex; gap: 20px; margin-top: 20px;">
+            <div class="kpi-box" style="flex: 1; background: #f1f3f5; border-left: 4px solid #4a90e2; padding: 15px; border-radius: 0 8px 8px 0; display: flex; align-items: center; gap: 15px;">
+                <div class="kpi-icone" style="font-size: 24px;">💳</div>
+                <div>
+                    <span class="kpi-titulo" style="font-size: 11px; color: #6c757d; text-transform: uppercase; font-weight: 600; display: block;">Ticket Médio</span>
+                    <div class="kpi-valor" style="font-size: 18px; font-weight: bold; color: #212529; margin-top: 2px;">
+                        <span id="ticket-medio-real">R$ 0,00</span> <span style="font-size: 12px; font-weight: normal; color: #666;">por cliente</span>
+                    </div>
+                </div>
+            </div>
+            <div class="kpi-box" style="flex: 1; background: #f1f3f5; border-left: 4px solid #2ecc71; padding: 15px; border-radius: 0 8px 8px 0; display: flex; align-items: center; gap: 15px;">
+                <div class="kpi-icone" style="font-size: 24px;">⚡</div>
+                <div>
+                    <span class="kpi-titulo" style="font-size: 11px; color: #6c757d; text-transform: uppercase; font-weight: 600; display: block;">Forma de Pagamento Favorita</span>
+                    <div class="kpi-valor" id="forma-pagamento-favorita" style="font-size: 18px; font-weight: bold; color: #212529; margin-top: 2px;">Nenhuma</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================= -->
+    <!-- SEÇÃO DE CONFIGURAÇÕES - REESTRUTURADA COMO CARD (IGUAL PAGINA 2)-->
+    <!-- ================================================================= -->
+    <section id="configuracoes" class="container-admin">
+        <div class="card-painel-estilo" style="background: #ffffff; border-radius: 8px; padding: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e9ecef;">
+            
+            <h2 class="titulo-secao-adm" style="margin-top: 0;">⚙️ Configurações do Sistema</h2>
+            <p class="instrucao-campo" style="color: #666; margin-bottom: 25px;">Gerencie as regras de negócio, cupons e taxas da sua loja virtual.</p>
+
+            <form id="form-configuracoes">
+                <div class="config-subgrupo" style="margin-bottom: 25px;">
+                    <h3 style="border-bottom: 2px solid #dee2e6; padding-bottom: 8px; font-size: 16px; color: #333;">🎯 Meta de Faturamento</h3>
+
+                    <div class="config-linha" style="display: flex; justify-content: space-between; align-items: center;">
+                        <label for="config-meta-faturamento" style="font-weight: 500;">Meta de Faturamento Mensal (R$):</label>
+                        <input type="text" id="config-meta-faturamento" class="config-input" value="0,00" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 180px; text-align: right;">
+                    </div>
+                </div>
+
+                <div class="config-subgrupo" style="margin-bottom: 25px;">
+                    <h3 style="border-bottom: 2px solid #dee2e6; padding-bottom: 8px; font-size: 16px; color: #333;">🚚 Logística e Frete</h3>
+                    
+                    <div class="config-linha" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <label for="config-frete-gratis" style="font-weight: 500;">Valor mínimo para Frete Grátis (R$):</label>
+                        <input type="text" id="config-frete-gratis" class="config-input" value="199,00" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 180px; text-align: right;">
+                    </div>
+
+                    <div class="config-linha" style="display: flex; justify-content: space-between; align-items: center;">
+                        <label for="config-frete-fixo" style="font-weight: 500;">Valor do Frete Fixo Padrão (R$):</label>
+                        <input type="text" id="config-frete-fixo" class="config-input" value="15,00" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 180px; text-align: right;">
+                    </div>
+                </div>
+
+                <div class="config-subgrupo" style="margin-bottom: 30px;">
+                    <h3 style="border-bottom: 2px solid #dee2e6; padding-bottom: 8px; font-size: 16px; color: #333;">🎟️ Cupons e Promoções</h3>
+                    <p style="color:#777; font-size:13px; margin: 6px 0 12px 0;">Você pode ter vários cupons ativos ao mesmo tempo, cada um com sua própria validade.</p>
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:14px;">
+                        <div>
+                            <label for="novo-cupom-codigo" style="font-weight:500; font-size:13px; display:block; margin-bottom:4px;">Código</label>
+                            <input type="text" id="novo-cupom-codigo" placeholder="Ex: VINTAGE10" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 150px; text-transform:uppercase;">
+                        </div>
+                        <div>
+                            <label for="novo-cupom-desconto" style="font-weight:500; font-size:13px; display:block; margin-bottom:4px;">Desconto (%)</label>
+                            <input type="number" id="novo-cupom-desconto" min="0" max="100" placeholder="10" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 100px;">
+                        </div>
+                        <div>
+                            <label for="novo-cupom-validade" style="font-weight:500; font-size:13px; display:block; margin-bottom:4px;">Válido até</label>
+                            <input type="date" id="novo-cupom-validade" style="padding: 7px 10px; border: 1px solid #dcd8cf; border-radius: 6px;">
+                        </div>
+                        <button type="button" id="btn-adicionar-cupom" style="padding: 9px 16px; border-radius: 6px; border: none; background-color: #6f42c1; color: #fff; font-weight: 600; cursor: pointer;">+ Adicionar Cupom</button>
+                    </div>
+
+                    <div id="lista-cupons-cadastrados" style="display:flex; flex-direction:column; gap:8px;"></div>
+                </div>
+
+                <div class="config-subgrupo" style="margin-bottom: 30px;">
+                    <h3 style="border-bottom: 2px solid #dee2e6; padding-bottom: 8px; font-size: 16px; color: #333;">📍 Frete por Região (CEP)</h3>
+                    <p style="color:#777; font-size:13px; margin: 6px 0 12px 0;">Defina valores de frete diferentes por faixa de CEP. Pedidos fora de todas as faixas usam o Frete Fixo Padrão configurado acima.</p>
+
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:14px;">
+                        <div>
+                            <label for="nova-regiao-nome" style="font-weight:500; font-size:13px; display:block; margin-bottom:4px;">Região</label>
+                            <input type="text" id="nova-regiao-nome" placeholder="Ex: Grande SP" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 140px;">
+                        </div>
+                        <div>
+                            <label for="nova-regiao-cep-inicio" style="font-weight:500; font-size:13px; display:block; margin-bottom:4px;">CEP Inicial</label>
+                            <input type="text" id="nova-regiao-cep-inicio" placeholder="01000-000" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 120px;">
+                        </div>
+                        <div>
+                            <label for="nova-regiao-cep-fim" style="font-weight:500; font-size:13px; display:block; margin-bottom:4px;">CEP Final</label>
+                            <input type="text" id="nova-regiao-cep-fim" placeholder="09999-999" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 120px;">
+                        </div>
+                        <div>
+                            <label for="nova-regiao-valor" style="font-weight:500; font-size:13px; display:block; margin-bottom:4px;">Valor (R$)</label>
+                            <input type="text" id="nova-regiao-valor" placeholder="12,00" style="padding: 8px 12px; border: 1px solid #dcd8cf; border-radius: 6px; width: 100px;">
+                        </div>
+                        <button type="button" id="btn-adicionar-regiao" style="padding: 9px 16px; border-radius: 6px; border: none; background-color: #6f42c1; color: #fff; font-weight: 600; cursor: pointer;">+ Adicionar Região</button>
+                    </div>
+
+                    <div id="lista-regioes-frete" style="display:flex; flex-direction:column; gap:8px;"></div>
+                </div>
+
+                <button type="button" id="btn-salvar-config" class="btn-salvar-sistema" style="background-color: #6f42c1; color: white; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    💾 Salvar Alterações do Sistema
+                </button>
+            </form>
+
+        </div>
+    </section>
+
+    <div id="modal-editar-estoque" class="modal-admin">
+        <div class="modal-conteudo">
+            <div class="modal-cabecalho">
+                <h3>✏️ Editar Produto e Estoque</h3>
+                <button type="button" class="btn-fechar-modal" onclick="window.gerenciadorEstoque.fecharModal()">&times;</button>
+            </div>
+            
+            <form id="form-editar-estoque" style="padding: 15px;">
+                <input type="hidden" id="edit-id">
+
+                <div class="campo-modal" style="margin-bottom: 12px; display: flex; flex-direction: column;">
+                    <label for="edit-nome" style="font-weight: 600; margin-bottom: 4px;">Nome do Produto</label>
+                    <input type="text" id="edit-nome" class="input-modal" style="padding: 8px; border: 1px solid #dcd8cf; border-radius: 4px;" required>
+                </div>
+
+                <div class="campo-modal" style="margin-bottom: 12px; display: flex; flex-direction: column;">
+                    <label for="edit-categoria" style="font-weight: 600; margin-bottom: 4px;">Categoria</label>
+                    <input type="text" id="edit-categoria" class="input-modal" style="padding: 8px; border: 1px solid #dcd8cf; border-radius: 4px;" required>
+                </div>
+
+                <div class="campo-modal" style="margin-bottom: 12px; display: flex; flex-direction: column;">
+                    <label for="edit-preco" style="font-weight: 600; margin-bottom: 4px;">Preço (R$)</label>
+                    <input type="number" id="edit-preco" step="0.01" class="input-modal" style="padding: 8px; border: 1px solid #dcd8cf; border-radius: 4px;" required>
+                </div>
+
+                 <div class="campo-modal" style="margin-bottom: 15px; display: flex; flex-direction: column;">
+                    <label for="edit-foto" style="font-weight: 600; margin-bottom: 4px;">Adicionar Novas Fotos (mantém as já cadastradas)</label>
+                    <input type="file" id="edit-foto" accept="image/*" multiple style="padding: 6px; background: #fff; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    <div id="edit-galeria-fotos" style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;"></div>
+                 </div>
+
+                <label style="font-weight: 600; display: block; margin-bottom: 8px;">Grade de Estoque Updated</label>
+                <div class="grade-modal-estoque" style="display: flex; gap: 10px; flex-wrap: wrap; background: #fafafa; padding: 12px; border-radius: 4px; border: 1px solid #dcd8cf; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-weight: bold;">P:</span>
+                        <input type="number" id="edit-qtd-p" min="0" style="width: 50px; padding: 4px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-weight: bold;">M:</span>
+                        <input type="number" id="edit-qtd-m" min="0" style="width: 50px; padding: 4px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-weight: bold;">G:</span>
+                        <input type="number" id="edit-qtd-g" min="0" style="width: 50px; padding: 4px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-weight: bold;">GG:</span>
+                        <input type="number" id="edit-qtd-gg" min="0" style="width: 50px; padding: 4px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 4px;">
+                        <span style="font-weight: bold;">Ún:</span>
+                        <input type="number" id="edit-unico-modal" min="0" style="width: 50px; padding: 4px; border: 1px solid #dcd8cf; border-radius: 4px;">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-salvar-produto" style="width: 100%; padding: 10px; font-weight: bold; cursor: pointer;">💾 Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="painel.js"></script>
+</body>
+</html>

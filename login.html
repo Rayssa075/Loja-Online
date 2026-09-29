@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brothers Vintage | Acesso do Lojista</title>
+    <link rel="stylesheet" href="painel.css">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f4f2ec;
+        }
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 32px;
+        }
+        .auth-titulo {
+            text-align: center;
+            margin-bottom: 4px;
+        }
+        .auth-subtitulo {
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .auth-abas {
+            display: flex;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .auth-aba {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #999;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        .auth-aba.ativa {
+            color: #6f42c1;
+            border-bottom-color: #6f42c1;
+        }
+        .auth-form { display: none; flex-direction: column; gap: 14px; }
+        .auth-form.ativa { display: flex; }
+        .auth-form label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .auth-form input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dcd8cf;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .auth-btn {
+            margin-top: 8px;
+            padding: 12px;
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .auth-btn:hover { background-color: #5a349b; }
+        .auth-erro {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-top: -6px;
+            min-height: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <h2 class="auth-titulo">Brothers Vintage</h2>
+        <p class="auth-subtitulo">Painel de Gestão para Lojistas</p>
+
+        <div class="auth-abas">
+            <div class="auth-aba ativa" data-alvo="form-login">Entrar</div>
+            <div class="auth-aba" data-alvo="form-cadastro">Criar minha loja</div>
+        </div>
+
+        <form id="form-login" class="auth-form ativa">
+            <div>
+                <label for="login-email">E-mail</label>
+                <input type="email" id="login-email" required>
+            </div>
+            <div>
+                <label for="login-senha">Senha</label>
+                <input type="password" id="login-senha" required>
+            </div>
+            <div class="auth-erro" id="login-erro"></div>
+            <button type="submit" class="auth-btn">Entrar</button>
+        </form>
+
+        <form id="form-cadastro" class="auth-form">
+            <div>
+                <label for="cad-nome-loja">Nome da Loja</label>
+                <input type="text" id="cad-nome-loja" placeholder="Ex: Brothers Vintage" required>
+            </div>
+            <div>
+                <label for="cad-email">E-mail</label>
+                <input type="email" id="cad-email" required>
+            </div>
+            <div>
+                <label for="cad-senha">Senha</label>
+                <input type="password" id="cad-senha" required>
+            </div>
+            <div class="auth-erro" id="cadastro-erro"></div>
+            <button type="submit" class="auth-btn">Criar minha loja</button>
+        </form>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>
